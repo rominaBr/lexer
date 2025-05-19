@@ -1,0 +1,86 @@
+{
+    "equipos":[
+        {
+            
+            "nombre_equipo":"SINTAX ERROR",
+            "identificador_equipo":"https://i.postimg.cc/zvQcPBms/LogoSSL.jpg",
+            "link":"https://frre.cvg.utn.edu.ar/course/view.php?id=399",
+            "asignatura":"Sintáxis y semántica de Lenguajes",
+            "carrera":"Ingeniería en Sistemas de Información",
+            "universidad_regional":"UTN Facultad Regional Resistencia",
+            "direccion":{
+                "calle":"French 414",
+                "ciudad":"Resistencia",
+                "país":"Argentina"
+            },
+            "alianza_equipo":"Como somos un equipo conformado mayoritariamente por personas que trabajan además de cursar la carrera, la organización será la siguiente: Mantendremos una comunicación constante a través de un grupo de WhatsApp, donde se coordinarán los detalles del trabajo. Tendremos reuniones presenciales en la universidad después de clases, siempre y cuando los horarios de todos los miembros lo permitan. También nos reuniremos por Discord los fines de semana, decidiendo entre todos, en conversaciones durante la semana, si será el sábado o el domingo, o ambos si la tarea lo requiere. Utilizaremos herramientas colaborativas como GitHub, Discord, Google Drive, Canva, entre otras, para el desarrollo del trabajo. Las tareas se asignarán según las habilidades de cada miembro. La persona encargada de cada tarea coordinará cómo se llevará a cabo. Los demás se comprometen a apoyar en todo lo que sea necesario, no solo para cumplir los objetivos, sino también para aprender y reforzar los conocimientos requeridos en cada proceso. Todos los miembros somos responsables de cumplir con las tareas y objetivos del equipo. Y lo más importante: cada uno se compromete a no abandonar la materia, y si eso llegara a pasar, hablarlo primero con el resto del equipo.",
+            "integrantes":[
+                {
+                    "nombre":"nombre",
+                    "edad":18,
+                    "cargo":"db admin",
+                    "foto":"https://pbs.twimg.com/media/FCPNWd8XsAg5AkL.jpg",
+                    "email":"algo@gmail.com",
+                    "habilidades":"string",
+                    "salario":1000.00,
+                    "activo":true
+                },
+                {
+                    "nombre":"nombre",
+                    "edad":18,
+                    "cargo":"ux designer",
+                    "foto":"https://pbs.twimg.com/media/FCPNWd8XsAg5AkL.jpg",
+                    "email":"algo@gmail.com",
+                    "habilidades":"string",
+                    "salario":1000.00,
+                    "activo":true
+                },
+                {
+                    "nombre":"nombre",
+                    "edad":18,
+                    "cargo":"marketing",
+                    "foto":"https://pbs.twimg.com/media/FCPNWd8XsAg5AkL.jpg",
+                    "email":"algo@gmail.com",
+                    "habilidades":"string",
+                    "salario":1000.00,
+                    "activo":true
+                }
+            ],        
+            "proyectos":[
+                {
+                    "nombre":"Ínterprete JSON y traductor HTML",
+                    "estado":"In progress",
+                    "resumen":"Construir analizadores léxico y sintáctico que permita analizar, validar y transformar un documento JSON que describe y almacena información de equipos y proyectos. Deberá indicar si está bien construido (adecuado al formato indicado, sin errores) de otra manera indicar los errores; adicionalmente a medida que analiza el documento deberá transformar el contenido en un documento HTML.",
+                    "tareas":[
+                        {
+                            "nombre":"Gramática",
+                            "estado":"Done",
+                            "resumen":"Presentar la gramática del analizador sintáctico. Contemplando restricciones del enunciado.",
+                            "fecha_inicio":"2025-03-18",
+                            "fecha_fin":"2025-05-04"
+                        },
+                        {
+                            "nombre":"LEXER",
+                            "estado":"In progress",
+                            "resumen":"Presentar lexer reconociendo todos los tokens. Actualizar documento",
+                            "fecha_inicio":"2025-04-10",
+                            "fecha_fin":"2025-06-08"
+                        },
+                        {
+                            "nombre":"PARSER",
+                            "estado":"To do",
+                            "resumen":"Presentación final. LEXER + PARSER. Funcionamiento completo. Actualizar documento, subir video resumen.",
+                            "fecha_inicio":"2025-04-18",
+                            "fecha_fin":"2025-07-06"
+                        }
+                    ],
+                    "fecha_inicio":"2025-03-28",
+                    "fecha_fin":"2025-06-30",
+                    "video":"https://www.youtube.com/",
+                    "conclusión":"Pendiente"
+                }]
+        }
+    ], 
+    "version":"1.0.0",
+    "firma_digital":"sintax"
+}
