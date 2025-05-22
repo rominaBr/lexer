@@ -322,7 +322,7 @@ def obtener_json():
 root = tk.Tk()
 root.title("Analizador Léxico")
 root.geometry("1000x600")
-root.iconbitmap("LogoSSL.ico")
+#root.iconbitmap("LogoSSL.ico")
 
 main_frame = tk.Frame(root)
 main_frame.pack(fill=tk.BOTH, expand=True)
