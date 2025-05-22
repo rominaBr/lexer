@@ -8,8 +8,7 @@ import re
 tokens = (
     'LLAVEI', 'LLAVED', # { }
     'CORCHETEI', 'CORCHETED', # [ ]
-    'COMA',
-    'TOK_EQUIPOS', 'TOK_VERSION', 'TOK_FIRMA_DIG',
+    'COMA', 'TOK_EQUIPOS', 'TOK_VERSION', 'TOK_FIRMA_DIG',
     'TOK_NOMBRE_EQUIPO', 'TOK_IDENTIDAD_EQ', 'TOK_LINK',
     'TOK_ASIGNATURA', 'TOK_CARRERA', 'TOK_UNIVERSIDAD', 'TOK_DIRECCION',
     'TOK_CALLE', 'TOK_CIUDAD', 'TOK_PAIS', 'TOK_ALIANZA', 'TOK_INTEGRANTES',
@@ -228,7 +227,7 @@ def t_STRING(t):
             datetime.datetime.strptime(t.value, '%Y-%m-%d')
             t.type = 'DATE'
         except ValueError:
-            pass  # Si falla, se queda como STRING
+            pass  
 
     # Verifica si es un email
     elif re.fullmatch(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', t.value):
@@ -270,10 +269,14 @@ def t_NULL(t):
 
 t_ignore = ' \t\n'
 
+errores=[]
+
 def t_error(t):
-    messagebox.showerror("Error",f"Caracter ilegal: {t.value[0]}")
+    errores.append(f"Caracter ilegal: {t.value[0]}")
+    #messagebox.showerror("Error",f"Caracter ilegal: {t.value[0]}")
     t.lexer.skip(1)
 
+    
 lexer = lex.lex()
 
 
@@ -303,6 +306,13 @@ def obtener_json():
 
         for tok in lexer:
             output_area.insert(tk.END, f'{tok.type}: {tok.value}\n')
+
+        if errores:
+            mensaje = "\n".join(errores)
+            messagebox.showerror("Fin del proceso", f"Errores encontrados:\n{mensaje}")
+            errores.clear()
+        else:
+            messagebox.showinfo("Fin del proceso","Análisis completado sin errores.")
     else:
         output_area.insert(tk.END, "No hay JSON ingresado\n")
 
