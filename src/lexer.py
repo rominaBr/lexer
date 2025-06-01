@@ -2,7 +2,6 @@ import tkinter as tk
 import ply.lex as lex
 from tkinter import filedialog, scrolledtext, messagebox
 from decimal import Decimal, ROUND_DOWN
-import re
 
 
 tokens = (
@@ -158,7 +157,7 @@ def t_VACIO(t):
 
 def t_TO_DO(t):
     r'\"(T|t)o\s(D|d)o\"'
-    t.value = t.value[1:-1]   # Elimina las comillas
+    t.value = t.value[1:-1]
     return t
 
 def t_INPROGRESS(t):
@@ -216,27 +215,24 @@ def t_DBADMIN(t):
     t.value = t.value[1:-1]
     return t
 
+def t_DATE(t):
+    r'\"(19\d{2}|20\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\"'
+    t.value = t.value[1:-1]
+    return t
+
+def t_EMAIL(t):
+    r'\"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\"'
+    t.value = t.value[1:-1]
+    return t
+
+def t_URL(t):
+    r'\"https?://[a-zA-Z0-9\-._~:/?#\[\]@!$&\'()*+,;=%]+\"'
+    t.value = t.value[1:-1]
+    return t
+
 def t_STRING(t):
     r'"(\\.|[^"\\])*"'
     t.value = t.value[1:-1]
-
-    # Verifica si es una fecha
-    if re.fullmatch(r'(19\d{2}|20\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])', t.value):
-        try:
-            import datetime
-            datetime.datetime.strptime(t.value, '%Y-%m-%d')
-            t.type = 'DATE'
-        except ValueError:
-            pass  
-
-    # Verifica si es un email
-    elif re.fullmatch(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', t.value):
-        t.type = 'EMAIL'
-
-    # Verifica si es una URL
-    elif re.fullmatch(r'https?://[a-zA-Z0-9\-._~:/?#\[\]@!$&\'()*+,;=%]+', t.value):
-        t.type = 'URL'
-
     return t
 
 
@@ -272,8 +268,10 @@ t_ignore = ' \t\n'
 errores=[]
 
 def t_error(t):
+    #print(t.lineno)
     errores.append(f"Caracter ilegal: {t.value[0]}")
-    #messagebox.showerror("Error",f"Caracter ilegal: {t.value[0]}")
+    #messagebox.showerror("Error",f"Caracter ilegal: {t.value[0]}")  
+    print(f"Caracter ilegal: {t.value[0]}")     
     t.lexer.skip(1)
 
     
@@ -309,10 +307,14 @@ def obtener_json():
 
         if errores:
             mensaje = "\n".join(errores)
-            messagebox.showerror("Fin del proceso", f"Errores encontrados:\n{mensaje}")
+            error_area.config(state='normal')
+            error_area.delete(1.0, tk.END)
+            error_area.insert(tk.END, mensaje + "\n")
+            error_area.config(state='disabled')
+            messagebox.showerror("Fin del proceso", f"Análisis finalizado con errores.")
             errores.clear()
         else:
-            messagebox.showinfo("Fin del proceso","Análisis completado sin errores.")
+            messagebox.showinfo("Fin del proceso","Análisis finalizado sin errores.")
     else:
         output_area.insert(tk.END, "No hay JSON ingresado\n")
 
@@ -321,7 +323,7 @@ def obtener_json():
 
 root = tk.Tk()
 root.title("Analizador Léxico")
-root.geometry("1000x600")
+root.geometry("1000x650")
 #root.iconbitmap("LogoSSL.ico")
 
 main_frame = tk.Frame(root)
@@ -330,10 +332,12 @@ main_frame.pack(fill=tk.BOTH, expand=True)
 main_frame.columnconfigure(0, weight=1)  # Entrada JSON (izquierda)
 main_frame.columnconfigure(1, weight=2)  # Resultado Lexer (derecha)
 main_frame.rowconfigure(0, weight=1)
+main_frame.rowconfigure(1, weight=0)
 
 # Panel izquierdo (entrada JSON)
 frame_entrada = tk.Frame(main_frame)
 frame_entrada.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+
 
 btn_cargar = tk.Button(frame_entrada, text="Cargar JSON", command=cargar_archivo)
 btn_cargar.pack(pady=5)
@@ -353,6 +357,15 @@ label_resultado.pack(pady=5)
 
 output_area = scrolledtext.ScrolledText(frame_salida, wrap=tk.WORD, state='disabled')
 output_area.pack(fill=tk.BOTH, expand=True)
+
+frame_errores = tk.Frame(main_frame)
+frame_errores.grid(row=1, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
+
+label_errores = tk.Label(frame_errores, text="Errores", font=("Arial", 12, "bold"))
+label_errores.pack(pady=5)
+
+error_area = scrolledtext.ScrolledText(frame_errores, wrap=tk.WORD, height=6, state='disabled', fg='red')
+error_area.pack(fill=tk.BOTH, expand=True)
 
 
 root.mainloop()
