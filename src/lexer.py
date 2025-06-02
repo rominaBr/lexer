@@ -269,9 +269,7 @@ errores=[]
 
 def t_error(t):
     #print(t.lineno)
-    errores.append(f"Caracter ilegal: {t.value[0]}")
-    #messagebox.showerror("Error",f"Caracter ilegal: {t.value[0]}")  
-    print(f"Caracter ilegal: {t.value[0]}")     
+    errores.append(f"Caracter ilegal: {t.value[0]}")        
     t.lexer.skip(1)
 
     
@@ -297,7 +295,10 @@ def cargar_archivo():
 def obtener_json():
     contenido = text_area.get(1.0, tk.END).strip()
     output_area.config(state='normal')  # Habilita edición para escribir
-    output_area.delete(1.0, tk.END)     # Limpia la salida
+    output_area.delete(1.0, tk.END)  
+    error_area.config(state='normal')
+    error_area.delete(1.0, tk.END) 
+    error_area.config(state='disabled')     # Limpia la salida
 
     if contenido:
         lexer.input(contenido)
