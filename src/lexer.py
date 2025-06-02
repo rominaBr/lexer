@@ -274,10 +274,8 @@ def t_error(t):
     errores.append(f"Línea {t.lineno}: Caracter ilegal: {t.value[0]}")    
     marcar_linea_error(t.lineno)    
     t.lexer.skip(1)
-
     
 lexer = lex.lex()
-
 
 
 def cargar_archivo():
@@ -294,7 +292,6 @@ def cargar_archivo():
         text_area.insert(tk.END, contenido)
 
 
-
 def obtener_json():
     text_area.tag_remove("error", "1.0", tk.END)
     contenido = text_area.get(1.0, tk.END).strip()
@@ -303,7 +300,8 @@ def obtener_json():
     error_area.config(state='normal')
     error_area.delete(1.0, tk.END) 
     error_area.config(state='disabled') 
-    lexer.lineno = 1    # Limpia la salida
+    lexer.lineno = 1  # Reinicia el contador de líneas
+    errores.clear()  # Limpia la lista de errores
 
     if contenido:
         lexer.input(contenido)
@@ -341,13 +339,12 @@ main_frame.pack(fill=tk.BOTH, expand=True)
 
 main_frame.columnconfigure(0, weight=1)  # Entrada JSON (izquierda)
 main_frame.columnconfigure(1, weight=2)  # Resultado Lexer (derecha)
-main_frame.rowconfigure(0, weight=1)
-main_frame.rowconfigure(1, weight=0)
+main_frame.rowconfigure(0, weight=1) # Panel superior (entrada JSON y resultado)
+main_frame.rowconfigure(1, weight=0) # Panel inferior (errores)
 
 # Panel izquierdo (entrada JSON)
 frame_entrada = tk.Frame(main_frame)
 frame_entrada.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
-
 
 btn_cargar = tk.Button(frame_entrada, text="Cargar JSON", command=cargar_archivo)
 btn_cargar.pack(pady=5)
