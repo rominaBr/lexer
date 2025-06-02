@@ -262,14 +262,17 @@ def t_NULL(t):
     t.value = None
     return t
 
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
 
-t_ignore = ' \t\n'
+t_ignore = ' \t'
 
 errores=[]
 
 def t_error(t):
-    #print(t.lineno)
-    errores.append(f"Caracter ilegal: {t.value[0]}")        
+    errores.append(f"Línea {t.lineno}: Caracter ilegal: {t.value[0]}")    
+    marcar_linea_error(t.lineno)    
     t.lexer.skip(1)
 
     
@@ -293,12 +296,14 @@ def cargar_archivo():
 
 
 def obtener_json():
+    text_area.tag_remove("error", "1.0", tk.END)
     contenido = text_area.get(1.0, tk.END).strip()
     output_area.config(state='normal')  # Habilita edición para escribir
     output_area.delete(1.0, tk.END)  
     error_area.config(state='normal')
     error_area.delete(1.0, tk.END) 
-    error_area.config(state='disabled')     # Limpia la salida
+    error_area.config(state='disabled') 
+    lexer.lineno = 1    # Limpia la salida
 
     if contenido:
         lexer.input(contenido)
@@ -321,6 +326,10 @@ def obtener_json():
 
     output_area.config(state='disabled') 
 
+def marcar_linea_error(linea):
+    inicio = f"{linea}.0"
+    fin = f"{linea}.end"
+    text_area.tag_add("error", inicio, fin)
 
 root = tk.Tk()
 root.title("Analizador Léxico")
@@ -345,6 +354,7 @@ btn_cargar.pack(pady=5)
 
 text_area = scrolledtext.ScrolledText(frame_entrada, wrap=tk.WORD)
 text_area.pack(fill=tk.BOTH, expand=True)
+text_area.tag_config("error", background="misty rose")
 
 btn_obtener = tk.Button(frame_entrada, text="Procesar JSON", command=obtener_json)
 btn_obtener.pack(pady=5)
